@@ -3,8 +3,8 @@ let app = express();
 let mongoose = require("mongoose");
 let bcrypt = require("bcrypt");
 let jwt = require("jsonwebtoken");
-
-let user = require("../models/User")
+let user = require("../models/User");
+let JWTSecret = "aushdauasagetrysdidhajhdwu";
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
@@ -48,6 +48,18 @@ app.post("/user", async (req, res) => {
         res.sendStatus(500);
     }
     
+})
+
+app.post("/auth", async (req, res) => {
+    let {email, password} = req.body;
+    jwt.sign({email}, JWTSecret, {expiresIn: '48h'}, (err, token) => {
+        if(err) {
+            req.sendStatus(500);
+            console.log(err);
+        } else {
+            req.json({token: token})
+        }
+    })
 })
 
 app.delete("/user/:email", async (req, res) => {
