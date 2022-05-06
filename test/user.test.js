@@ -3,6 +3,20 @@ let supertest = require("supertest");
 const { getMaxListeners } = require("../src/app");
 let request = supertest(app);
 
+let mainUser = {name: "Victor", email: "victor@email.com", password: "123456"}
+
+beforeAll(() =>{
+    // insere usuário no banco
+    return request.post("/user").send(mainUser).then(res => {}).catch(err => {console.log(err)})
+})
+
+afterAll(() => {
+    // remove usuário inserido no banco
+    return request.delete("/user/" + mainUser.email)
+    .then(res => {})
+    .catch(err => {console.log(err)})
+})
+
 describe("Cadastro de usuário", () => {
 
     test("Deve cadastrar um usuário com sucesso", () => {
