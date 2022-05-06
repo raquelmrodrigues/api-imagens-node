@@ -7,7 +7,10 @@ let mainUser = {name: "Victor", email: "victor@email.com", password: "123456"}
 
 beforeAll(() =>{
     // insere usuário no banco
-    return request.post("/user").send(mainUser).then(res => {}).catch(err => {console.log(err)})
+    return request.post("/user")
+    .send(mainUser)
+    .then(res => {})
+    .catch(err => {console.log(err)})
 })
 
 afterAll(() => {
@@ -76,3 +79,16 @@ describe("Cadastro de usuário", () => {
         });
     })
 }) 
+
+describe("Autenticação", () => {
+    test("Deve retornar um token quando logar", () => {
+        return request.post("/auth")
+        .send({email: mainUser.email, password: mainUser.password})
+        .then(res => {
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.token).toBeDefined();
+        }).catch(err => {
+            fail(err);
+        })
+    })
+})

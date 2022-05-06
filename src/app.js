@@ -2,6 +2,7 @@ let express = require("express");
 let app = express();
 let mongoose = require("mongoose");
 let bcrypt = require("bcrypt");
+let jwt = require("jsonwebtoken");
 
 let user = require("../models/User")
 
